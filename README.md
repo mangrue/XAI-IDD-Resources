@@ -1,6 +1,6 @@
 # XAI-IDD-Resources
 
-Shared datasets and code of the  article "An Evaluation of XAI Methods applied to Information Disorder Detection Models"
+Shared resources, datasets, and code of the  article "An Evaluation of XAI Methods applied to Information Disorder Detection Models"
 ______________________________________________________________________________________________________________________________________________________________________________
 
 1) This repository contains the pre-processed datasets (see folder 'DATASETS') and the code of the evaluation workflow as well as the created output data, which is required for computing the evaluation metrics based on the evaluation methods (see folder 'benchmark/created_data').
