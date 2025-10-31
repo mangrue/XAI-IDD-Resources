@@ -404,15 +404,11 @@ print(labels[:5])
 #Alternative approach: Two step approach - see details below - due to inconsistant behavior of XAI method LIME
 
 '''
-model= nn.DataParallel(model)   #to run on multiple GPUs (for gradients run on one GPU since get_gradients() results in errors otherwise)
+model= nn.DataParallel(model)   #to run on multiple GPUs
 model.to(device)
 '''
 
 model.to(device)    #run on single GPU
-
-#LIME values =
-#LIME Idea: approximate the tangent to the curve. To understand the shape of the ML function LIME generates points around the red cross (we have an idea of the boundary f(x) thanks to the colors of the generated points). Credits to Joseph
-#https://medium.com/towards-data-science/lime-explain-machine-learning-predictions-af8f18189bfe
 
 import numpy as np
 import lime
@@ -504,8 +500,8 @@ for i in range(0, len(eval_data), 1):
   #str_to_predict = ' '.join(str_to_predict.split())
   #print("NEXT STRING is: " + str_to_predict)
   explainer = LimeTextExplainer(class_names=class_names)
-  #MAX. with 4 NVIDIA RTX5000 (24GB) parallel executed: sample number of 220, from 230 on out of memory
-  exp = explainer.explain_instance(str_to_predict, predictor, num_features=1000, num_samples=40) #default 5.000 #maximum 50 with 24GB GPU, for more I need another 24GB of GPU memory
+  #MAX. with 4 NVIDIA RTX5000 (24GB) parallel executed: sample number of 160-220, from 230 on always out of memory (however, still very instable for the 160 samples)
+  exp = explainer.explain_instance(str_to_predict, predictor, num_features=1000, num_samples=40) #maximum 40 stable with one 24GB GPU
   #get weight
   exp_weight = return_weights(exp)
   #get features
@@ -515,7 +511,7 @@ for i in range(0, len(eval_data), 1):
   lime_values.append(exp_inst)
   #PROBLEM:
   #RANDOM ERROR AT RANDOM POSITIONS - IF RERUN SAME STRING IT WORKS: 'ValueError: Input y contains NaN.'
-  #Then save parts and merge later:
+  #Alternative: Save parts and merge later:
   #pickle.dump(lime_values, open(path_data_created+'PARTS/'+model_name+'_lime_values_500_'+dataset+'_COUNT-0-'+str(i)+'.sav', 'wb'))
   print("LAST SAVED COUNT: "+str(i))
 
